@@ -99,7 +99,7 @@ if __name__ == "__main__":
     if args.notes is None:
         print('no notes included')
     else:
-        print("we got one: {}".format(args.notes))
+        print("Notes used: {}".format(args.notes))
     # read in the csv/tsv
     notes_file = pd.read_csv(args.notes)
     # extract the name of the lecture (without path or file type extension)
