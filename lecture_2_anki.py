@@ -48,20 +48,25 @@ if __name__ == "__main__":
     argParser = argparse.ArgumentParser(description = 'Read in files')
 
     # Add the arguments
-    argParser.add_argument( 'slides',
+    argParser.add_argument( '-S', '--slides',
                             help = 'The pdf slides for the same lecture.',
                             type = str
-                          )
+                            )
     
     argParser.add_argument( '-U', '--anki',
                             help = 'The Anki Profile folder to use.',
                             type = str
-                          )
+                            )
 
     argParser.add_argument('-N', '--notes',
                             help = '.csv file containing Question, Answer, and slide number as headings',
                             type = str
                             )
+
+    argParser.add_argument('-O', '--output_path',
+                            help = 'path to save output Anki csv file',
+                            type = str
+                            )  
 
     # Execute the parse_args() method
     args = argParser.parse_args()
@@ -87,6 +92,13 @@ if __name__ == "__main__":
 
     print('Anki folder verification done.')
 
+    if args.output_path is None:
+        print('No output path provided.')
+        print('Using ./ as the output path.')
+        output_folder = './'
+    else:
+        output_folder = args.output_path
+
     ####### Read pdf lecture ########
     slides_path = os.path.expanduser(args.slides)
     print('Loading {}...'.format(slides_path))
@@ -107,4 +119,4 @@ if __name__ == "__main__":
     # rename the Slide_Number column to the correct Anki format
     notes_file['Slide_Number'] = '<img src=\"' + lecture_title + '_slide_' + notes_file['Slide_Number'].astype(str) + '.png\">'
     # Save file
-    notes_file.to_csv('{}_QAS.csv'.format(lecture_title), index = False, header = False)
+    notes_file.to_csv('{}{}_QAS.csv'.format(output_folder, lecture_title), index = False, header = False)
