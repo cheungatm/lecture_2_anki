@@ -114,6 +114,11 @@ if __name__ == "__main__":
         print("Notes used: {}".format(args.notes))
     # read in the csv/tsv
     notes_file = pd.read_csv(args.notes)
+    # Fill in NaN values with 0
+    notes_file.fillna(0, inplace = True)
+    # Coerce column to integer format to ensure proper file naming later on
+    notes_file['Slide_Number'] = pd.to_numeric(notes_file['Slide_Number'], downcast = 'integer')
+
     # extract the name of the lecture (without path or file type extension)
     lecture_title = os.path.basename(os.path.splitext(slides_path)[0])
     # rename the Slide_Number column to the correct Anki format
